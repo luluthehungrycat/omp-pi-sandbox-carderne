@@ -3,7 +3,6 @@ import { type AgentToolResult, type ExtensionAPI } from "@earendil-works/pi-codi
 import {
   createBashToolDefinition,
   isToolCallEventType,
-  SettingsManager,
 } from "@earendil-works/pi-coding-agent";
 import { Key } from "@earendil-works/pi-tui";
 
@@ -49,8 +48,8 @@ export default function (pi: ExtensionAPI) {
   });
 
   const localCwd = process.cwd();
-  const userShellPath = SettingsManager.create(localCwd).getShellPath();
-  const localBash = createBashToolDefinition(localCwd, { shellPath: userShellPath });
+  const userShellPath = process.env.SHELL || "/bin/sh";
+  const localBash = createBashToolDefinition(localCwd);
 
   let sandboxEnabled = false;
   let sandboxInitialized = false;
@@ -177,7 +176,6 @@ export default function (pi: ExtensionAPI) {
             userShellPath,
             loadConfig(ctx.cwd).network?.sshProxy !== false,
           ),
-          shellPath: userShellPath,
         }).execute(id, params, signal, onUpdate, ctx);
       };
 

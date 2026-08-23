@@ -6,7 +6,8 @@ import {
   type SandboxAskCallback,
   type SandboxRuntimeConfig,
 } from "@carderne/sandbox-runtime";
-import { type BashOperations, getShellConfig } from "@earendil-works/pi-coding-agent";
+import type { BashOperations } from "@oh-my-pi/pi-coding-agent/extensibility/legacy-pi-coding-agent-shim";
+import { getShellConfig } from "@oh-my-pi/pi-utils/procmgr";
 
 import { type SandboxConfig } from "./config.ts";
 import { canonicalizePath, domainIsAllowed } from "./policy.ts";
@@ -68,6 +69,8 @@ export function buildRuntimeConfig(
       ...config.network,
       allowedDomains: effective.domains,
       deniedDomains: config.network?.deniedDomains ?? [],
+      allowUnixSockets: [],
+      allowAllUnixSockets: false,
     },
     filesystem: {
       disabled: config.filesystem?.disabled,
@@ -135,11 +138,16 @@ export function createSandboxedBashOps(shellPath?: string, sshProxy = true): Bas
         `${sshProxyCommand}${command}`,
         shell,
       );
+      const sandboxEnv = Object.fromEntries(
+        Object.entries(env ?? process.env).filter(([key]) =>
+          !/^(SSH_AUTH_SOCK|SSH_AGENT_PID|AWS_|AZURE_|GOOGLE_APPLICATION_CREDENTIALS|GITHUB_TOKEN|GH_TOKEN|OPENAI_API_KEY|ANTHROPIC_API_KEY|HF_TOKEN|HUGGING_FACE_HUB_TOKEN)/.test(key),
+        ),
+      ) as NodeJS.ProcessEnv;
 
       return new Promise((resolve, reject) => {
         const child = spawn(shell, [...args, wrappedCommand], {
           cwd,
-          env,
+          env: sandboxEnv,
           detached: true,
           stdio: ["ignore", "pipe", "pipe"],
         });
