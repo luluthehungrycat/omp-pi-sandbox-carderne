@@ -1,5 +1,5 @@
-import { type ExtensionAPI, type ExtensionContext } from "@earendil-works/pi-coding-agent";
-import { Input, Key, matchesKey, truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
+import type { ExtensionAPI, ExtensionContext } from "@oh-my-pi/pi-coding-agent/extensibility/extensions";
+import { Input, Key, matchesKey, truncateToWidth, visibleWidth } from "@oh-my-pi/pi-tui";
 
 import {
   DEFAULT_PERMISSION_PROMPT_TIMEOUT_SECONDS,

@@ -1,6 +1,7 @@
 import test from "node:test";
 
-import { type ExtensionAPI, type ExtensionContext } from "@earendil-works/pi-coding-agent";
+import type { ExtensionAPI, ExtensionContext } from "@oh-my-pi/pi-coding-agent/extensibility/extensions";
+import { getAgentDir } from "@oh-my-pi/pi-coding-agent";
 import assert from "node:assert/strict";
 
 import {
@@ -21,15 +22,8 @@ test("permissionPromptTimeoutMs defaults omission and enables only positive fini
   assert.equal(permissionPromptTimeoutMs(Number.MAX_VALUE), 2_147_483_647);
 });
 
-test("permissionOptions displays Pi's configured global path", () => {
-  const originalAgentDir = process.env.PI_CODING_AGENT_DIR;
-  process.env.PI_CODING_AGENT_DIR = "/tmp/custom-pi-agent";
-  try {
-    assert.equal(permissionOptions("/workspace")[3]?.hint, "→ /tmp/custom-pi-agent/sandbox.json");
-  } finally {
-    if (originalAgentDir === undefined) delete process.env.PI_CODING_AGENT_DIR;
-    else process.env.PI_CODING_AGENT_DIR = originalAgentDir;
-  }
+test("permissionOptions displays OMP's configured global path", () => {
+  assert.equal(permissionOptions("/workspace")[3]?.hint, `→ ${getAgentDir()}/sandbox.json`);
 });
 
 test("permissionPromptRemainingSeconds rounds up and stops at zero", () => {

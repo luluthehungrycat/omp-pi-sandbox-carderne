@@ -1,10 +1,10 @@
 import { SandboxManager } from "@carderne/sandbox-runtime";
-import { type AgentToolResult, type ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import type { AgentToolResult } from "@oh-my-pi/pi-agent-core";
 import {
   createBashToolDefinition,
-  isToolCallEventType,
-} from "@earendil-works/pi-coding-agent";
-import { Key } from "@earendil-works/pi-tui";
+} from "@oh-my-pi/pi-coding-agent/extensibility/legacy-pi-coding-agent-shim";
+import { isToolCallEventType, type ExtensionAPI } from "@oh-my-pi/pi-coding-agent/extensibility/extensions";
+import { Key } from "@oh-my-pi/pi-tui";
 
 import {
   addDomainToConfig,
@@ -238,39 +238,6 @@ export default function (pi: ExtensionAPI) {
       }
       return result;
     },
-  });
-
-  pi.on("user_bash", async (event, ctx) => {
-    if (!sandboxEnabled || !sandboxInitialized) return;
-
-    const config = loadConfig(ctx.cwd);
-    for (const domain of extractDomainsFromCommand(event.command)) {
-      if (!domainIsAllowed(domain, effectiveDomains(ctx.cwd))) {
-        const choice = await promptDomainBlock(
-          pi,
-          ctx,
-          domain,
-          config.permissionPromptTimeoutSeconds,
-        );
-        if (choice.action === "abort") {
-          return {
-            result: {
-              output: `Blocked: "${domain}" is not in allowedDomains. Use /sandbox to review your config.`,
-              exitCode: 1,
-              cancelled: false,
-              truncated: false,
-            },
-          };
-        }
-        await applyChoice(choice.action, "domain", choice.value, ctx.cwd);
-      }
-    }
-    return {
-      operations: createSandboxedBashOps(
-        userShellPath,
-        loadConfig(ctx.cwd).network?.sshProxy !== false,
-      ),
-    };
   });
 
   pi.on("tool_call", async (event, ctx) => {
