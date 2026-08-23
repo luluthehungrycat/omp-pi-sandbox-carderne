@@ -54,10 +54,29 @@ inherit a minimal non-login `PATH`). On macOS, `/opt/homebrew/bin` and
 `/usr/local/bin` are the usual culprits — make sure your launcher's
 environment includes whichever one your install uses.
 
-#### Install
+#### Install with OMP
+
+Configure GitHub Packages authentication once:
+
 ```bash
-pi install npm:pi-sandbox
+npm config set @luluthehungrycat:registry https://npm.pkg.github.com
+npm config set //npm.pkg.github.com/:_authToken "$GITHUB_TOKEN"
 ```
+
+Install and verify through OMP:
+
+```bash
+omp plugin install @luluthehungrycat/omp-pi-sandbox-carderne
+omp plugin doctor
+```
+
+For direct GitHub installation:
+
+```bash
+omp plugin install git+ssh://git@github.com/luluthehungrycat/omp-pi-sandbox-carderne.git#v0.6.6
+```
+
+The package manifest declares both `pi.extensions` and `omp.extensions`, so OMP discovers the extension automatically after plugin installation.
 
 #### Configure
 Add a config like this either to Pi's global agent directory (by default, `~/.pi/agent/sandbox.json`; respects `PI_CODING_AGENT_DIR`) or to `.pi/sandbox.json` (local).

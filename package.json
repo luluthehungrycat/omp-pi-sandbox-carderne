@@ -1,6 +1,6 @@
 {
-  "name": "pi-sandbox",
-  "version": "0.6.5",
+  "name": "@luluthehungrycat/omp-pi-sandbox-carderne",
+  "version": "0.6.6",
   "description": "OS-level sandboxing for pi with interactive permission prompts",
   "keywords": [
     "pi-package",
@@ -20,20 +20,24 @@
       "./index.ts"
     ]
   },
+  "omp": {
+    "extensions": [
+      "./index.ts"
+    ]
+  },
   "publishConfig": {
-    "access": "public",
-    "provenance": true
+    "registry": "https://npm.pkg.github.com"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/carderne/pi-sandbox.git"
+    "url": "git+ssh://git@github.com/luluthehungrycat/omp-pi-sandbox-carderne.git"
   },
   "author": "Chris Arderne <chris@rdrn.me>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/carderne/pi-sandbox/issues"
+    "url": "https://github.com/luluthehungrycat/omp-pi-sandbox-carderne/issues"
   },
-  "homepage": "https://github.com/carderne/pi-sandbox",
+  "homepage": "https://github.com/luluthehungrycat/omp-pi-sandbox-carderne",
   "scripts": {
     "fmt": "oxfmt index.ts src test",
     "lint": "oxlint index.ts src test",
