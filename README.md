@@ -56,24 +56,19 @@ environment includes whichever one your install uses.
 
 #### Install with OMP
 
-Configure GitHub Packages authentication once:
+The default installation uses the public GitHub repository and does not require a GitHub token:
+
+```bash
+omp plugin install github:luluthehungrycat/omp-pi-sandbox-carderne#v0.6.6
+omp plugin doctor
+```
+
+For consumers who prefer the authenticated GitHub Packages registry:
 
 ```bash
 npm config set @luluthehungrycat:registry https://npm.pkg.github.com
 npm config set //npm.pkg.github.com/:_authToken "$GITHUB_TOKEN"
-```
-
-Install and verify through OMP:
-
-```bash
-omp plugin install @luluthehungrycat/omp-pi-sandbox-carderne
-omp plugin doctor
-```
-
-For direct GitHub installation:
-
-```bash
-omp plugin install git+ssh://git@github.com/luluthehungrycat/omp-pi-sandbox-carderne.git#v0.6.6
+omp plugin install @luluthehungrycat/omp-pi-sandbox-carderne@0.6.6
 ```
 
 The package manifest declares both `pi.extensions` and `omp.extensions`, so OMP discovers the extension automatically after plugin installation.
