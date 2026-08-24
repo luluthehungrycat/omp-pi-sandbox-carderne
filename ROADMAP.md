@@ -12,8 +12,8 @@
 
 ## Next
 
-- [ ] Run the shared OMP/Bun compatibility matrix on every supported release.
-- [ ] Add package-loaded sandbox tool-call runtime coverage to the shared release gate.
+- [x] Run the shared OMP/Bun compatibility matrix for OMP 18.0.0/18.0.4 on Bun 1.4.0.
+- [x] Add adversarial sandbox tool-call runtime coverage to the shared release gate.
 - [ ] Keep the Carderne runtime policy and OMP permission UI behavior covered by integration fixtures.
 
 ## Release gate
